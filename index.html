@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Sky10 by wangfakang</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Sky10</h1>
+        <p class="header">nginx http2 analysis</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/wangfakang/sky10/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/wangfakang/sky10/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/wangfakang/sky10">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/wangfakang">wangfakang</a></p>
+
+
+      </header>
+      <section>
+        <p><code>http2的简单分析：</code></p>
+
+<p>http1/hspdy/http2的简单对比：   </p>
+
+<ul>
+<li>1.HTTP/1.1不支持压缩每个请求和相应的HTTP报头。SPDY和后来的HTTP/2旨在使用不同的压缩类型来弥补这个短板。<br>
+</li>
+<li>2.SPDY使用普通的DEFLATE 算法而HTTP/2使用专门为压缩报头而设计的HPACK算法。它使用预定义的token、动态表以
+及哈夫曼压缩。<br>
+</li>
+</ul>
+
+<p>使用http2其性能提高的主要原因就是：      </p>
+
+<ul>
+<li>1.使用了链路复用技术，也就是说主要通过创建一个浏览器、服务器之间的永久连接来提高速度，而不是每个信息都
+创建一个连接。这将降低了建立连接的时间消耗。另外．<br>
+</li>
+<li>2.其压缩算法好，它使用二进制来传输数据而不是文件，二进制是电脑语言。这说明电脑不需要浪费时间将信息翻译
+为它能够理解的形式．</li>
+</ul>
+
+<p>目前nginx原生版本中在1.9.5中已经支持http2了，而且已经将spdy进行移除了．    </p>
+
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">server</span> {
+
+<span class="pl-k">listen</span> <span class="pl-s">80</span>;
+
+<span class="pl-k">location</span> <span class="pl-en">/ </span>{
+
+<span class="pl-c1">return</span> <span class="pl-s">301</span> https://<span class="pl-smi">$host$request_uri</span>;　//永久重定向
+
+}
+
+}
+
+
+<span class="pl-k">server</span> {
+
+<span class="pl-k">listen</span> <span class="pl-s">443</span> ssl http2<span class="pl-c1"> default_server</span>;
+
+<span class="pl-k">ssl_certificate</span>    server.crt;//相关证书
+
+<span class="pl-k">ssl_certificate_key</span> server.key;//相当于密钥
+
+}</pre></div>
+
+<p>rewrite后面的flag值含义:<br>
+301  permanent 代表永久性转移   </p>
+
+<p>302  redirect   代表临时性转移     </p>
+
+<p>注意其秘钥的管理以及传输的<a href="http://wangfakang.github.io/net2">过程</a>之前有说过．</p>
+
+<p>其实301与302在用户看起来是一样的，具体表现是：效果只是一个跳转，浏览器中旧的URL变成了新的URL。页面跳到了这个新
+的url指向的地方。对于浏览器而言：302有可能被认为是一种垃圾广告．    </p>
+
+<h1>
+<a id="欢迎一起交流学习-" class="anchor" href="#%E6%AC%A2%E8%BF%8E%E4%B8%80%E8%B5%B7%E4%BA%A4%E6%B5%81%E5%AD%A6%E4%B9%A0-" aria-hidden="true"><span class="octicon octicon-link"></span></a>欢迎一起交流学习 </h1>
+
+<p>在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流</p>
+
+<ul>
+<li>邮件(1031379296#qq.com, 把#换成@)</li>
+<li>QQ: 1031379296</li>
+<li>weibo: <a href="http://weibo.com/u/2786211992/home">@王发康</a>
+</li>
+</ul>
+
+<h1>
+<a id="thx" class="anchor" href="#thx" aria-hidden="true"><span class="octicon octicon-link"></span></a>Thx</h1>
+
+<ul>
+<li>chunshengsterATgmail.com</li>
+</ul>
+
+<h1>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h1>
+
+<ul>
+<li>Linux\nginx\golang\c\c++爱好者</li>
+<li>欢迎一起交流  一起学习# </li>
+<li>Others say good and Others good</li>
+</ul>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("nginx http2 analysis");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
